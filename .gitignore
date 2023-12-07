@@ -1,0 +1,4 @@
+obj/
+bin/
+Directory.Build.props
+.idea/
