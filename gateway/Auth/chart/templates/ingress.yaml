@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: auth-proxy
+  name: {{ include "auth.fullname" . }}
 spec:
   rules:
-  - host: arch.homework
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - path: /login
@@ -13,32 +13,32 @@ spec:
           service:
             name: auth
             port:
-              number: 9000
+              number: {{ .Values.service.port }}
       - path: /logout
         pathType: Prefix 
         backend:
           service:
             name: auth
             port:
-              number: 9000
+              number: {{ .Values.service.port }}
       - path: /register
         pathType: Prefix
         backend:
           service:
             name: auth
             port:
-              number: 9000
+              number: {{ .Values.service.port }}
       - path: /auth
         pathType: Prefix
         backend:
           service:
             name: auth
             port:
-              number: 9000
+              number: {{ .Values.service.port }}
       - path: /health
         pathType: Prefix
         backend:
           service:
             name: auth
             port:
-              number: 9000
+              number: {{ .Values.service.port }}

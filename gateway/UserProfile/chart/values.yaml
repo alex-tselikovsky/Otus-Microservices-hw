@@ -13,5 +13,6 @@ autoscaling:
 serviceAccount:
   create: false
 
-secrets:
-  connectionstring: ""
+ingress:
+  host: arch.homework
+  authAddress: "http://auth.auth.svc.cluster.local:9000/auth"

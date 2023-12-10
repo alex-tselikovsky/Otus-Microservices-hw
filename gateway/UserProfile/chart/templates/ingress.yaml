@@ -3,25 +3,24 @@ kind: Ingress
 metadata:
   name: app
   annotations:
-    nginx.ingress.kubernetes.io/auth-url: "http://auth.auth.svc.cluster.local:9000/auth"
-#    nginx.ingress.kubernetes.io/auth-signin: "http://$host/signin"
+    nginx.ingress.kubernetes.io/auth-url: {{ .Values.ingress.authAddress }}
     nginx.ingress.kubernetes.io/auth-response-headers: "X-User,X-Email,X-UserId,X-First-Name,X-Last-Name"
 spec:
   rules:
-  - host: arch.homework
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - path: /users/me
         pathType: Prefix
         backend:
           service:
-            name: user-profile-app
+            name: {{ include "user-profile-chart.fullname" . }}
             port:
-              number: 80
+              number: {{ .Values.service.port }}
       - path: /info
         pathType: Prefix
         backend:
           service:
-            name: user-profile-app
+            name: {{ include "user-profile-chart.fullname" . }}
             port:
-              number: 80  
+              number: {{ .Values.service.port }}  
