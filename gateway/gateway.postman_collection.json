@@ -1,0 +1,658 @@
+{
+  "info": {
+    "_postman_id": "c4b24bb1-55b0-4515-9ace-88992683f1f2",
+    "name": "Otus-gateway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Разлогиним в качестве подготовки к тестам",
+      "id": "c5a3ee6f-eafa-483f-b57c-04e11e6dfd89",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/logout",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "logout"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Получение данных о пользователе до логина",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "bacb7bef-1070-468a-9378-592fb67055f3",
+            "exec": [
+              "pm.test(\"receiving data for unathorized user should be fail\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "4b9f4805-6023-43c9-89f5-db38ed2a772a",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Регистрация пользователя 1",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "7bc6b9bd-ce6e-42ab-8ee2-2ee4b694eed4",
+            "exec": [
+              "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))\r",
+              "pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+              "pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'))\r",
+              "pm.collectionVariables.set(\"name\", pm.variables.replaceIn('{{$randomUserName}}'))"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "1adfb768-ffcd-4a9c-961f-1a0d8bbc9bd6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Cookie",
+            "value": "session_id=c3321a5d-e06f-4ac8-9222-da8fe80edce5"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Login\":\"{{login}}\",\r\n    \"Email\":\"{{email}}\",\r\n    \"Name\":\"{{name}}\",\r\n    \"Password\":\"{{password}}\"\r\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Сохранение профиля до логина возвращает 401",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "846fea7c-36d9-4cd1-86cf-46ea10d5a2d2",
+            "exec": [
+              "pm.collectionVariables.set(\"address\", pm.variables.replaceIn('{{$randomStreetAddress}}'))\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "ca5d9b3c-ad16-462c-bf00-be26cdaedfe0",
+            "exec": [
+              "pm.test(\"receiving data for unathorized user should be fail\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "9ec98a97-4df0-4227-b635-9b81a8c95eac",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Name\":\"{{name}}\",\r\n    \"Address\":\"{{address}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Логин пользователя 1",
+      "id": "47717451-be3b-4f83-a601-d9e9d9d7dfea",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Cookie",
+            "value": "session_id=c3321a5d-e06f-4ac8-9222-da8fe80edce5"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Login\":\"{{login}}\",\r\n    \"Password\":\"{{password}}\"\r\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Сохранение профиля для пользователя 1",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "1c672e8a-6a30-495f-9c53-a486be75222b",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "ad7d591a-b0dd-4d71-a21d-7e9fefa0e237",
+            "exec": [
+              "pm.test(\"receiving data for unathorized user should be fail\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "cbb33f6c-de76-4f74-b737-c6097ae29b02",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session_id=www2388fee5-2dee-41e2-a3bb-5b53feecdb78ee;",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Name\":\"{{name}}\",\r\n    \"Address\":\"{{address}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Получение данных о текущем пользователе",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4abea540-66dc-46b6-b4f9-192a8f2b9a48",
+            "exec": [
+              "pm.test(\"test token data\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"));\r",
+              "    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"name\"));\r",
+              "    pm.expect(jsonData.address).to.eql(pm.collectionVariables.get(\"address\"));\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "fc6135f8-49ab-4336-83f0-ad878ede4359",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User",
+            "value": "Celestine.Labadie",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4991f9ad-c4bb-40c2-8559-cfbcebba5f2a",
+            "exec": [
+              "pm.test(\"receiving data for unathorized user should be fail\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "bb3bf32d-fb76-49da-a216-b94162992ff4",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/logout",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "logout"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Получение данных после разлогина",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "79971c3c-229f-43d5-ad07-5577f56ad021",
+            "exec": [
+              "pm.test(\"receiving data for unathorized user should be fail\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "5558adbe-8c05-40be-a892-f777e475bac7",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session_id=f97e6625-b397-4735-97e6-131debf6fee9",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Регистрация пользователя 2",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "16045d85-d020-4a7a-8d6e-be7d3e9c2271",
+            "exec": [
+              "pm.collectionVariables.set(\"password2\", pm.variables.replaceIn('{{$randomPassword}}'))\r",
+              "pm.collectionVariables.set(\"email2\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+              "pm.collectionVariables.set(\"login2\", pm.variables.replaceIn('{{$randomUserName}}'))\r",
+              "pm.collectionVariables.set(\"name2\", pm.variables.replaceIn('{{$randomUserName}}'))"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "1e8436a1-2921-4445-8a09-fab2a6661b06",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Cookie",
+            "value": "session_id=c3321a5d-e06f-4ac8-9222-da8fe80edce5"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"Login\":\"{{login2}}\",\n    \"Email\":\"{{email2}}\",\n    \"Name\":\"{{name2}}\",\n    \"Password\":\"{{password2}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Логин пользователя 2",
+      "id": "2a4da91c-1efc-462b-ac8c-398905922b11",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Cookie",
+            "value": "session_id=c3321a5d-e06f-4ac8-9222-da8fe80edce5"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"Login\":\"{{login2}}\",\n    \"Password\":\"{{password2}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Сохранение профиля пользователя 2",
+      "id": "b24e228a-68c0-4e23-bb68-0a285db8bbe7",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Name\":\"{{name2}}\",\r\n    \"Address\":\"{{$randomStreetAddress}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    },
+    {
+      "name": "Полученные данные должны быть данными пользователя 2 не 1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "3db2d309-05c4-4226-9536-70404babd01f",
+            "exec": [
+              "pm.test(\"Received data should not be user1's data\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.login).to.not.eq(pm.collectionVariables.get(\"login\"));\r",
+              "    pm.expect(jsonData.name).to.not.eq(pm.collectionVariables.get(\"name\"));\r",
+              "    pm.expect(jsonData.address).to.not.eq(pm.collectionVariables.get(\"address\"));\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "4e85721f-164c-4048-909e-0804a566f7fe",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "6c48684f-31b2-47a6-b7c1-de142f0e8482",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "eedcdc4b-3f57-4c24-b8cf-28ed5fb3aaf8",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "c922d5df-054b-45bb-90a1-ffe666da468e",
+      "key": "password",
+      "value": ""
+    },
+    {
+      "id": "05fd5d83-c538-43d3-bfcc-15096db96b82",
+      "key": "email",
+      "value": ""
+    },
+    {
+      "id": "e6ed56bb-94e5-4fbe-b47e-49b4ac5ec23a",
+      "key": "login",
+      "value": ""
+    },
+    {
+      "id": "0d3a4d09-7c31-4750-9210-9ed4672637ae",
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "id": "64e698c4-a2ea-4f6a-a713-49b57aac4df5",
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "id": "e0f44d13-2910-42bc-937f-b3b9ec808bb2",
+      "key": "avatar_uri",
+      "value": ""
+    },
+    {
+      "id": "04a71ca2-959d-40f9-80ec-b3373ff82b6b",
+      "key": "age",
+      "value": ""
+    },
+    {
+      "id": "81796e2c-f323-4722-bdfe-17072e11ef18",
+      "key": "address",
+      "value": ""
+    },
+    {
+      "id": "fe7f48de-6da7-48f4-a9f2-ae064815795b",
+      "key": "name",
+      "value": ""
+    },
+    {
+      "id": "698aefeb-41e0-4cf0-ba39-96100ae2db9c",
+      "key": "password2",
+      "value": ""
+    },
+    {
+      "id": "5d6322a7-2ea9-4efb-845e-52465618770b",
+      "key": "email2",
+      "value": ""
+    },
+    {
+      "id": "e83316e0-13a5-4f70-923a-c28551932f0a",
+      "key": "login2",
+      "value": ""
+    },
+    {
+      "id": "5b5f72f6-7033-4b2b-b341-5193f7f8eb68",
+      "key": "name2",
+      "value": ""
+    },
+    {
+      "id": "59560b2d-6ad5-4f5f-ba41-2323d85f854b",
+      "key": "baseUrl",
+      "value": "http://arch.homework",
+      "type": "string"
+    }
+  ]
+}
