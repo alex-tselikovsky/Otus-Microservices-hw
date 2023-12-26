@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "orders.fullname" . }}
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: {{ .Values.ingress.authAddress }}
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-User,X-Email,X-UserId,X-First-Name,X-Last-Name"
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /orders
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "orders.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}

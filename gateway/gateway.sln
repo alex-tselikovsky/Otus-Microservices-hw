@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth", "Auth\Auth.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserProfile", "UserProfile\UserProfile.csproj", "{314957E1-0F9D-49D3-89F5-7A1572F4B097}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders", "Orders\Orders.csproj", "{07C5A084-7C03-418F-BD35-BEE54227C70C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{314957E1-0F9D-49D3-89F5-7A1572F4B097}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{314957E1-0F9D-49D3-89F5-7A1572F4B097}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{314957E1-0F9D-49D3-89F5-7A1572F4B097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07C5A084-7C03-418F-BD35-BEE54227C70C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07C5A084-7C03-418F-BD35-BEE54227C70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07C5A084-7C03-418F-BD35-BEE54227C70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07C5A084-7C03-418F-BD35-BEE54227C70C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

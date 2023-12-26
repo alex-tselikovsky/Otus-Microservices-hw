@@ -1,0 +1,17 @@
+replicaCount: 1
+
+fullnameOverride: "orders"
+
+image: "tselofan/orders:latest"
+
+service:
+  #Для работы туннеля нужен сервис LoadBalancer
+  type: LoadBalancer
+  port: 80
+
+autoscaling:
+  enabled: false
+
+ingress:
+  host: arch.homework
+  authAddress: "http://auth.auth.svc.cluster.local:9000/auth"
