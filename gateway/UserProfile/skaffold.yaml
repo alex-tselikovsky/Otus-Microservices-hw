@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+metadata:
+  name: userprofile
+build:
+  artifacts:
+    - image: tselofan/user-profile
+      docker:
+        dockerfile: Dockerfile
+  tagPolicy:
+    sha256: { }
+deploy:
+  helm:
+    releases:
+      - name: user-profile-chart
+        chartPath: user-profile-chart
+        valuesFiles:
+          - user-profile-chart/values.yaml
+        version: 0.1.0
+        values:
+          image: tselofan/user-profile
+        

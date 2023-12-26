@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image: tselofan/user-profile
+
+service:
+  #Для работы туннеля нужен сервис LoadBalancer
+  type: LoadBalancer
+  port: 80
+
+autoscaling:
+  enabled: false
+
+serviceAccount:
+  create: false
+
+ingress:
+  host: arch.homework
+  authAddress: "http://auth.auth.svc.cluster.local:9000/auth"

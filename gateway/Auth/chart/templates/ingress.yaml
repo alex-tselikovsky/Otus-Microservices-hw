@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "auth.fullname" . }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: auth
+            port:
+              number: {{ .Values.service.port }}
+      - path: /logout
+        pathType: Prefix 
+        backend:
+          service:
+            name: auth
+            port:
+              number: {{ .Values.service.port }}
+      - path: /register
+        pathType: Prefix
+        backend:
+          service:
+            name: auth
+            port:
+              number: {{ .Values.service.port }}
+      - path: /auth
+        pathType: Prefix
+        backend:
+          service:
+            name: auth
+            port:
+              number: {{ .Values.service.port }}
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: auth
+            port:
+              number: {{ .Values.service.port }}

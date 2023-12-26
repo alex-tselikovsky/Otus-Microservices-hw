@@ -1,0 +1,19 @@
+replicaCount: 1
+
+fullnameOverride: "auth"
+
+image: "tselofan/auth"
+
+service:
+  #Для работы туннеля нужен сервис LoadBalancer
+  type: LoadBalancer
+  port: 9000
+
+autoscaling:
+  enabled: false
+
+serviceAccount:
+  create: false
+  
+ingress:
+  host: arch.homework
