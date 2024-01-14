@@ -6,8 +6,8 @@ helm install e-market e-market --namespace e-market --create-namespace
 При этом установится rabbitmq в качестве зависимости.
 
 Далее запускаем коллекцию postman для проверки:
+
 ```
-cd ..\
 newman run .\pm_collection.json
 ```
 
