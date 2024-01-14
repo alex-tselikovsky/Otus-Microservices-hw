@@ -1,0 +1,247 @@
+﻿{
+  "info": {
+    "_postman_id": "95031036-24f1-4c31-8541-1503cd1bfe43",
+    "name": "OTUS-saga",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create order",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "feb22011-6a22-4713-baa8-c7ff111c30fa",
+            "exec": [
+              "pm.collectionVariables.set('saga_orderId','');"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "cc2f3854-0473-4b8a-8d41-cd4441c527ec",
+            "exec": [
+              "pm.test(\"Received data should not be user1's data\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    pm.collectionVariables.set('saga_orderId', pm.response.text().replace(/\\\"/g, \"\"));\r",
+              "    \r",
+              "    console.info(pm.collectionVariables.get(\"saga_orderId\"));\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "d73d0ed5-ad17-454d-b4e4-97259a9247ec",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"SKUs\":[\"rrrr\"],\r\n    \"DeliveryArea\":\"Stavropol\",\r\n    \"DeliveryAddress\":\"pr Kutuzova\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get order",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "f240c123-fbe8-409a-8bf4-16215c16191d",
+            "exec": [
+              "pm.test(\"test undeliverable order\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql(2);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "b9d66856-075c-46be-afa6-1bef847bcde8",
+            "exec": [
+              "setTimeout(function(){}, 500);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "395c2c23-1537-4005-a1f6-35dbdb6560ad",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "www",
+            "value": "{{saga_orderId}}",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{saga_orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            "{{saga_orderId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create undeliverable ororder",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "feb22011-6a22-4713-baa8-c7ff111c30fa",
+            "exec": [
+              "pm.collectionVariables.set('saga_orderId','');"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "cc2f3854-0473-4b8a-8d41-cd4441c527ec",
+            "exec": [
+              "pm.test(\"Received data should not be user1's data\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    pm.collectionVariables.set(\"saga_orderId\", pm.response.text().replace(/\\\"/g, \"\"));\r",
+              "    console.info(pm.response.text().slice(1,1));\r",
+              "    console.info(pm.collectionVariables.get(\"saga_orderId\"));\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "f96c507e-597e-4d09-af5a-bbde3cbbc0bd",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"SKUs\":[\"rrrr\"],\r\n    \"DeliveryArea\":\"Moscow\",\r\n    \"DeliveryAddress\":\"pr Kutuzova\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get undeliverable order",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "f240c123-fbe8-409a-8bf4-16215c16191d",
+            "exec": [
+              "pm.test(\"test undeliverable order\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql(4);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "00cd8e18-33dd-4d98-ae44-3562b9deea18",
+            "exec": [
+              "setTimeout(function(){}, 500);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "df44ae89-ca9f-4aae-9d45-1b5f0d2791bb",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "www",
+            "value": "{{saga_orderId}}",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{saga_orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            "{{saga_orderId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "id": "9dbc6604-53e0-4d2d-921a-83bc0bee973f",
+      "key": "saga_orderId",
+      "value": ""
+    },
+    {
+      "id": "9dbc6604-53e0-4d2d-921a-83bc0bee973a",
+      "key": "baseUrl",
+      "value": "http://arch.homework"
+    }
+  ]
+}
