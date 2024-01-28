@@ -1,0 +1,48 @@
+﻿{{- if .Values.services }}
+{{- $top := . -}}
+{{- range $index, $service := .Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{$service.name}}"
+  labels:
+    name: "{{$service.name}}"
+spec:
+  {{- if not $.Values.autoscaling.enabled }}
+  replicas: {{ $.Values.replicaCount }}
+  {{- end }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: "{{$service.name}}"
+  template:
+    metadata:
+      labels:
+        name: "{{$service.name}}"
+    spec:
+      containers:
+       - name: "{{ $service.name }}" 
+         image: "{{ $service.image }}"
+         ports:
+           - name: http
+             containerPort: 80
+             protocol: TCP
+         livenessProbe:
+           httpGet:
+             path: /health/
+             port: 80
+         env:
+           - name: rabbitmq_host
+             value: "{{ $.Release.Name }}-rabbitmq"
+           - name: rabbitmq_user
+             value: {{ $.Values.rabbitmq.auth.username}}
+           - name: rabbitmq_password
+             value: {{ $.Values.rabbitmq.auth.password}}
+          
+---
+{{- end }}
+{{- end }}

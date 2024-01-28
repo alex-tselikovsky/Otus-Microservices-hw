@@ -1,0 +1,26 @@
+﻿replicaCount: 1
+
+service:
+  #Для работы туннеля нужен сервис LoadBalancer
+  type: LoadBalancer
+  port: 80
+
+services:
+  - name: "order"
+    image: "tselofan/order:latest"
+  - name: "payment"
+    image: "tselofan/payment:latest"
+  - name: "delivery"
+    image: "tselofan/delivery:latest"
+
+facadeService: "order"
+autoscaling:
+  enabled: false
+
+ingress:
+  host: arch.homework
+
+rabbitmq:
+  auth:
+    username: "user"
+    password: "qwerty"
